@@ -1,0 +1,50 @@
+# Publishes today's merged post to Instagram at 9:00 America/New_York.
+# GitHub cron is UTC-only, so it runs at both 13:00 and 14:00 UTC (9:00 ET in
+# summer and winter); the script ignores runs before 9:00 ET and already-posted
+# days. A merge after 9:00 ET posts immediately via the push trigger.
+name: Publish to Instagram
+
+on:
+  schedule:
+    - cron: '3 13 * * *'
+    - cron: '3 14 * * *'
+  push:
+    branches: [main]
+    paths: ['posts/**']
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Check token and post without publishing'
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/publish.mjs
+        env:
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
+      - name: Record publish
+        run: |
+          git add posts
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Record Instagram publish"
+          git pull --rebase origin main
+          git push
