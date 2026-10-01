@@ -1,16 +1,16 @@
-# Publishes today's merged post to Instagram at 9:00 America/New_York.
+# DISABLED (semi-automatic mode): runs only when started by hand.
+# To switch to fully automatic posting, add the INSTAGRAM_ACCESS_TOKEN secret
+# (README "Fully automatic posting") and restore the schedule/push triggers below:
+#   schedule: [{cron: '3 13 * * *'}, {cron: '3 14 * * *'}]
+#   push: {branches: [main], paths: ['posts/**']}
+#
+# Publishes today's post to Instagram at 9:00 America/New_York.
 # GitHub cron is UTC-only, so it runs at both 13:00 and 14:00 UTC (9:00 ET in
 # summer and winter); the script ignores runs before 9:00 ET and already-posted
 # days. A merge after 9:00 ET posts immediately via the push trigger.
 name: Publish to Instagram
 
 on:
-  schedule:
-    - cron: '3 13 * * *'
-    - cron: '3 14 * * *'
-  push:
-    branches: [main]
-    paths: ['posts/**']
   workflow_dispatch:
     inputs:
       dry_run:

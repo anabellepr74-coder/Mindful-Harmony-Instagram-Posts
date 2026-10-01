@@ -1,25 +1,28 @@
-# Saves the Canva export into the post PR as image.jpg, so the image is
-# reviewable in the PR and still available after Canva's link expires.
+# Saves the Canva export into the repo as image.jpg as soon as the daily agent
+# commits a post.json, because Canva's download links expire within hours.
+# The daily email links to this file.
 name: Fetch image
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-    paths: ['posts/**']
+  push:
+    branches: [main]
+    paths: ['posts/**/post.json']
   workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: fetch-image
+  cancel-in-progress: false
+
 jobs:
   fetch:
-    # Only PRs from branches in this repo (the daily agent's) can be written to.
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref || github.ref_name }}
+          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -31,4 +34,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "Add exported image [skip ci]"
+          git pull --rebase origin main
           git push
