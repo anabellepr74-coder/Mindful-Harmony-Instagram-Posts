@@ -89,10 +89,11 @@ Instagram by hand (semi-automatic mode). **Never post to Instagram yourself.**
    - `htmlBody`:
      - the image, shown inline:
        `<img src="https://raw.githubusercontent.com/anabellepr74-coder/Mindful-Harmony-Instagram-Posts/main/posts/<today>/image.jpg" width="360">`
-     - a link "Download image" to
+     - a short "How to post" line: on your phone, press and hold the picture
+       above and choose "Save image" (or "Save to Photos"), then in Instagram
+       tap + → Post, pick it, and paste the caption below.
+     - a smaller link "Open full-size image (for desktop)" to
        `https://github.com/anabellepr74-coder/Mindful-Harmony-Instagram-Posts/raw/main/posts/<today>/image.jpg`
-     - a short "How to post" line: open the link, long-press to save the image,
-       then in Instagram create a post with it and paste the caption.
      - the caption, exactly as in post.json, in its own block (line breaks as
        `<br>`) so it is easy to copy
      - the Canva edit link, in case they want to tweak the design first

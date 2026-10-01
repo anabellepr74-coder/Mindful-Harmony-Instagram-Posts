@@ -9,8 +9,8 @@ master template and emailed to you ready to post.
 |---|---|---|
 | 7:22 AM | A Claude Routine writes a new quote and caption, copies the Canva master template, fills in the quote, exports a JPG, and commits `posts/<date>/post.json`. Instructions: [`ROUTINE_PROMPT.md`](./ROUTINE_PROMPT.md). | Your Claude plan |
 | ~1 min later | **Fetch image** workflow saves the Canva export as `posts/<date>/image.jpg` (Canva links expire within hours). | GitHub Actions (free) |
-| ~7:30 AM | The Routine emails you the image, a download link, and the caption. | Your Claude plan |
-| When you like | You save the image and post it on Instagram with the caption. | You |
+| ~7:30 AM | The Routine emails you the image and the caption. | Your Claude plan |
+| When you like | On your phone, press and hold the picture in the email → Save image, then post it on Instagram and paste the caption. | You |
 
 The Routine needs the **Canva** and **Gmail** connectors attached to it.
 
